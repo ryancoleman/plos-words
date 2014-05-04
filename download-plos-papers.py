@@ -7,6 +7,7 @@ import sys  # always, pretty much
 import string  # string handling
 import urllib2  # url handling
 import urllib  # url encoding
+import os
 import argparse
 
 def plosOneQuery(articleNumber):
@@ -21,5 +22,17 @@ def plosOneQuery(articleNumber):
   dataOut = result.read()
   return dataOut
 
-data = plosOneQuery('0075992')
-print data
+try:
+  os.mkdir('xml')
+except OSError:   # directory exists
+  pass  # which is fine
+for number in xrange(1000):  # eventually change to 100000 and get them all
+  artNumber = string.zfill(number, 7)
+  if not os.path.exists(os.path.join('xml', artNumber + '.xml')):
+    try:
+      data = plosOneQuery(artNumber)
+      outxml = open(os.path.join('xml', artNumber + '.xml'), 'w')
+      outxml.write(data)
+      outxml.close()
+    except urllib2.HTTPError:
+      print artNumber + 'failed to download'
