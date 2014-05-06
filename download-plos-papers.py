@@ -51,4 +51,4 @@ for number in xrange(100000):  # eventually raise once plos adds more papers
       except urllib2.URLError:
         print artNumber, 'url open error'
       except httplib.BadStatusLine:
-        print artNumebr, ' bad status line'
+        print artNumber, ' bad status line'
