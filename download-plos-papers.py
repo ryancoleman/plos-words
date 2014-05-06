@@ -15,6 +15,7 @@ import socket  # for error catching
 import os
 import argparse
 import bz2
+import httplib
 
 def plosOneQuery(articleNumber):
   dataDict = {
