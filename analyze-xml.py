@@ -21,7 +21,7 @@ def isNumber(word):
 authorToNumber = collections.defaultdict(list)
 numberToWords = collections.defaultdict(set)
 numberToWordCount = collections.defaultdict(int)
-for xmlfile in glob.iglob('xml/00000*.xml.bz2'):
+for xmlfile in glob.iglob('xml/*.xml.bz2'):
   xmlNumber = int(string.split(os.path.split(xmlfile)[1], '.')[0])
   try:
     xmldata = xml.etree.ElementTree.parse(bz2.BZ2File(xmlfile, 'rb'))
@@ -49,9 +49,9 @@ for xmlfile in glob.iglob('xml/00000*.xml.bz2'):
         numberToWordCount[xmlNumber] += len(words)
   except xml.etree.ElementTree.ParseError:  # article not valid xml
     pass
-#for test in authorToNumber.itervalues():
-#  print test
+for test in authorToNumber.iteritems():
+  print len(test[1]), test[0].encode('ascii', 'replace')
 for xmlNumber in numberToWords.iterkeys():
-  #print numberToWords[xmlNumber]
-  print xmlNumber, len(numberToWords[xmlNumber]), numberToWordCount[xmlNumber],
-  print len(numberToWords[xmlNumber])/float(numberToWordCount[xmlNumber])
+  #print xmlNumber, len(numberToWords[xmlNumber]), numberToWordCount[xmlNumber],
+  #print len(numberToWords[xmlNumber])/float(numberToWordCount[xmlNumber])
+  pass
