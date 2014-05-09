@@ -3,7 +3,9 @@
 #run this script at your own risk. i can't find anything about how many
 # articles PLOS would like you to limit yourself to grabbing at once,
 # but if they have a limit, this script will break it.
-# currently, this downloads about a thousand files an hour. YMMV
+# currently, this downloads about a thousand files an hour on a home broadband
+# connection or a lot more (like the whole database in 3 hours) on internet2.
+# YMMV
 
 #http://www.plosone.org/article/fetchObjectAttachment.action?
 # uri=info%3Adoi%2F10.1371%2Fjournal.pone.0075992&representation=XML
@@ -14,9 +16,8 @@ import urllib2  # url handling
 import urllib  # url encoding
 import socket  # for error catching
 import os
-import argparse
-import bz2
-import httplib
+import bz2  # save compressed files
+import httplib  # for errors
 
 def plosOneQuery(articleNumber):
   dataDict = {
