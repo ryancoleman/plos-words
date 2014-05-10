@@ -23,7 +23,7 @@ authorToNumber = collections.defaultdict(list)
 numberToWordCount = collections.defaultdict(int)
 yearToNumber = collections.defaultdict(list)
 #this needs written out on the fly for memory usage reasons
-#outNTW = open('number.to.words.txt', 'w')
+outNTW = open('number.to.words.txt', 'w')
 for xmlfile in glob.iglob('xml/*.xml.bz2'):
   xmlNumber = int(string.split(os.path.split(xmlfile)[1], '.')[0])
   numberToWords = set()
@@ -48,18 +48,18 @@ for xmlfile in glob.iglob('xml/*.xml.bz2'):
         lowerText = string.lower(child.text).encode('ascii', 'ignore')
         mangledText = re.sub(r'\W+', ' ', lowerText)  # removes non alphabet
         words = string.split(mangledText)
-#        for word in words:
-#          stemmed = porter2.stem(word)  # stemming removes -ing -ed etc
-#          if not isNumber(stemmed):   # if converts to a float, don't do it
-#            numberToWords.update([stemmed])
+        for word in words:
+          stemmed = porter2.stem(word)  # stemming removes -ing -ed etc
+          if not isNumber(stemmed):   # if converts to a float, don't do it
+            numberToWords.update([stemmed])
         numberToWordCount[xmlNumber] += len(words)
   except xml.etree.ElementTree.ParseError:  # article not valid xml
     pass
-#  outNTW.write(str(xmlNumber) + ' ' + str(len(numberToWords)) + ' ')
-#  for oneWord in numberToWords:
-#    outNTW.write(oneWord + ' ')
-#  outNTW.write('\n')
-#outNTW.close()
+  outNTW.write(str(xmlNumber) + ' ' + str(len(numberToWords)) + ' ')
+  for oneWord in numberToWords:
+    outNTW.write(oneWord + ' ')
+  outNTW.write('\n')
+outNTW.close()
 #just write these to plaintext files. janky but lets others use the data
 #easily without having to unpack pickled files or whatever other solution
 #i could choose from.
