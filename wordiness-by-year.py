@@ -6,15 +6,20 @@ import statistics
 
 bokeh.plotting.output_file("wordiness-by-year.html", title="wordiness-by-year")
 
-yearToNumber = readdata.yearToNumber()
-numberToUnique = readdata.numberToUnique()
-numberToCount = readdata.numberToCount()
-numberToWordiness = readdata.numberToWordiness()
-print numberToWordiness  
-'''
-scatter(
-    flowers["petal_length"], flowers["petal_width"],
-    fill_alpha=0.2, size=10, name="iris")
-
-show()
-'''
+yearToWordiness = readdata.yearToWordiness()
+dataTable = [], []
+for year in sorted(yearToWordiness.iterkeys()):
+  dataTable[0].append(year)
+  dataTable[1].append(statistics.computeMean(yearToWordiness[year]))
+allDataTable = [], []
+for year in sorted(yearToWordiness.iterkeys()):
+  for oneWordiness in yearToWordiness[year]:
+    allDataTable[0].append(year)
+    allDataTable[1].append(oneWordiness)
+bokeh.plotting.scatter(
+    dataTable[0], dataTable[1],
+    color='red', fill_alpha=0.2, size=20, name="wordiness")
+bokeh.plotting.scatter(
+    allDataTable[0], allDataTable[1],
+    color='blue', fill_alpha=0.2, size=1, name="wordiness")
+bokeh.plotting.show()

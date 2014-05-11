@@ -39,3 +39,12 @@ def numberToWordiness():
     except KeyError:
       pass  # means the article xml was invalid
   return numberToWordiness  
+
+def yearToWordiness():
+  yearToNumberDict = yearToNumber()
+  numberToWordinessDict = numberToWordiness()
+  yearToWordinessDict = collections.defaultdict(list)
+  for year, numberList in yearToNumberDict.iteritems():
+    for oneNumber in numberList:
+      yearToWordinessDict[year].append(numberToWordinessDict[oneNumber])
+  return yearToWordinessDict
