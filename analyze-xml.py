@@ -22,6 +22,7 @@ def isNumber(word):
 authorToNumber = collections.defaultdict(list)
 numberToWordCount = collections.defaultdict(int)
 yearToNumber = collections.defaultdict(list)
+numberToType = collections.defaultdict(list)
 #this needs written out on the fly for memory usage reasons
 outNTW = open('number.to.words.txt', 'w')
 for xmlfile in glob.iglob('xml/*.xml.bz2'):
@@ -29,6 +30,9 @@ for xmlfile in glob.iglob('xml/*.xml.bz2'):
   numberToWords = set()
   try:
     xmldata = xml.etree.ElementTree.parse(bz2.BZ2File(xmlfile, 'rb'))
+    for child in xmldata.getroot().iter('article'):  # may want to exclude 
+      if 'article-type' in child.attrib:           # corrections
+        numberToType[xmlNumber].append(child.attrib['article-type'])
     for child in xmldata.getroot().iter('copyright-year'):  # parses out year
       yearToNumber[child.text].append(xmlNumber)
     for child in xmldata.getroot().iter('contrib'):  # parses out author
@@ -63,6 +67,13 @@ outNTW.close()
 #just write these to plaintext files. janky but lets others use the data
 #easily without having to unpack pickled files or whatever other solution
 #i could choose from.
+outNTT = open('number.to.type.txt', 'w')
+for outdata in numberToType.iteritems():
+  outNTT.write(str(outdata[0]) + ' ')
+  for typeData in outdata[1]:
+    outNTT.write(str(typeData) + ' ')
+  outNTT.write('\n')
+outNTT.close()
 outATN = open('author.to.number.txt', 'w')
 for outdata in authorToNumber.iteritems():
   outATN.write(str(outdata[0].encode('ascii', 'replace')) + ' ')

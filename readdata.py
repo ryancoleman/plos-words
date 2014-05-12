@@ -5,12 +5,25 @@ import string
 
 #reads all the data in plos-words files produced by analyze-xml.py
 
-def yearToNumber(filename='year.to.number.txt'):
+def numberToType(filename='number.to.type.txt'):
+  numberToType = {}
+  for line in open(filename, 'r'):
+    tokens = string.split(line)
+    numberToType[int(tokens[0])] = tokens[1]
+  return numberToType 
+
+def yearToNumber(filename='year.to.number.txt', include=None, exclude=None):
+  if include is not None or exclude is not None:
+    numberToTypeDict = numberToType()
   yearToNumber = collections.defaultdict(list)
   for line in open(filename, 'r'):
     tokens = string.split(line)
     try:
-      yearToNumber[int(tokens[0])].extend([int(token) for token in tokens[1:]])
+      for number in tokens[1:]:
+        artNumber = int(number)
+        if include is None or numberToTypeDict[artNumber] in include:
+          if exclude is None or numberToTypeDict[artNumber] not in include:
+            yearToNumber[int(tokens[0])].append(artNumber)
     except ValueError:
       pass  # some articles don't have years.
   return yearToNumber
@@ -40,8 +53,8 @@ def numberToWordiness():
       pass  # means the article xml was invalid
   return numberToWordiness  
 
-def yearToWordiness():
-  yearToNumberDict = yearToNumber()
+def yearToWordiness(exclude=None, include=None):
+  yearToNumberDict = yearToNumber(exclude=exclude, include=include)
   numberToWordinessDict = numberToWordiness()
   yearToWordinessDict = collections.defaultdict(list)
   for year, numberList in yearToNumberDict.iteritems():

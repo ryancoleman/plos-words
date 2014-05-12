@@ -6,7 +6,7 @@ import statistics
 
 bokeh.plotting.output_file("wordiness-by-year.html", title="wordiness-by-year")
 
-yearToWordiness = readdata.yearToWordiness()
+yearToWordiness = readdata.yearToWordiness(include=['research-article'])
 dataTable = [], []
 for year in sorted(yearToWordiness.iterkeys()):
   dataTable[0].append(year)
@@ -18,7 +18,7 @@ for year in sorted(yearToWordiness.iterkeys()):
     allDataTable[1].append(oneWordiness)
 bokeh.plotting.scatter(
     dataTable[0], dataTable[1],
-    color='red', fill_alpha=0.2, size=20, name="wordiness")
+    color='red', fill_alpha=0.2, size=20, name="mean-wordiness")
 bokeh.plotting.scatter(
     allDataTable[0], allDataTable[1],
     color='blue', fill_alpha=0.2, size=1, name="wordiness")
