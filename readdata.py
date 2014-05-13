@@ -61,3 +61,28 @@ def yearToWordiness(exclude=None, include=None):
     for oneNumber in numberList:
       yearToWordinessDict[year].append(numberToWordinessDict[oneNumber])
   return yearToWordinessDict
+
+def authorToNumber(filename='author.to.number.txt'):
+  authorToNumber = {}
+  for line in open(filename, 'r'):
+    tokens = string.split(line)
+    name = tokens[0]
+    numbers = []
+    for token in tokens[1:]:
+      try:
+        artNumber = int(token)
+        numbers.append(artNumber)
+      except ValueError:
+        name += ' ' + token
+    authorToNumber[name] = numbers
+  return authorToNumber
+
+def authorToWordiness(exclude=None, include=None):
+  authorToNumberDict = authorToNumber()
+  yearToNumberDict = yearToNumber(exclude=exclude, include=include)
+  numberToWordinessDict = numberToWordiness()
+  yearToWordinessDict = collections.defaultdict(list)
+  for year, numberList in yearToNumberDict.iteritems():
+    for oneNumber in numberList:
+      yearToWordinessDict[year].append(numberToWordinessDict[oneNumber])
+  return yearToWordinessDict
